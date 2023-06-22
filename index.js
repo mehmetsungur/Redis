@@ -1,15 +1,17 @@
 require("express-async-errors");
 
 const mongoose = require("mongoose");
-const express = require('express');
-const helmet = require('helmet');
+const express = require("express");
+const helmet = require("helmet");
 const Models = require("./mongodb/index.js");
 
-const RouterFn = require('./routes/index.js');
+const ExampleDataFormation = require("./mongodb/data/index.js");
+
+const RouterFns = require('./routes/index.js');
 const app = express();
 const router = express.Router();
 
-RouterFn.forEach((routerFn, index) => {
+RouterFns.forEach((routerFn, index) => {
     routerFn(router);
 })
 
@@ -22,19 +24,21 @@ app.use(express.urlencoded({
 
 app.get('/test', async (req, res) => {
     res.json({
-        test: "succesful",
+        test: "successful",
         createdAt: new Date().toUTCString()
     })
 })
 
 app.use("/api", router);
 
-mongoose.connect("mongodb+srv://mehmetsungur:Falcon21@second.aojeiid.mongodb.net/redis?retryWrites=true&w=majority").then(() => {
-    console.log("MongoDB Connected")
+mongoose.connect("mongodb+srv://redis:Falcon21@redis.tofbtfn.mongodb.net/?retryWrites=true&w=majority").then(async () => {
+    console.log("MongoDB Connected");
+    console.log("ExampleDataFormation Started");
+    await ExampleDataFormation();
 }).catch(err => {
     console.log(err);
 })
 
 app.listen(80, () => {
-    console.log('express server using 80 port')
+    console.log('express server using 80 port');
 })

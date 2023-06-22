@@ -17,9 +17,9 @@ const UsersSchema = new Schema({
     },
     email: {
         type: Types.String,
-        require: true,
         trim: true,
-        unique: true
+        unique: true,
+        require: true
     },
     password: {
         type: Types.String,
@@ -47,7 +47,7 @@ UsersSchema.pre('save', async function preSave(next) {
     if (this.isNew) {
         try {
             console.log('Password converting into hash');
-            this.password = await bcrypt.hash(this.password, 10)
+            this.password = await bcrypt.hash(this.password, 10);
             return next();
         } catch (err) {
             return next(err);
