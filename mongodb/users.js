@@ -46,7 +46,7 @@ const UsersSchema = new Schema({
 UsersSchema.pre('save', async function preSave(next) {
     if (this.isNew) {
         try {
-            console.log('Password converting into hash');
+            console.log("Password converting into hash");
             this.password = await bcrypt.hash(this.password, 10);
             return next();
         } catch (err) {
