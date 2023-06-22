@@ -1,6 +1,6 @@
 const TestRouterFn = require("./test.js");
-const RouterArrFn = [
+const RouterArrFns = [
     TestRouterFn
 ];
 
-module.exports = RouterArrFn;
+module.exports = RouterArrFns;
