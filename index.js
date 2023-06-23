@@ -10,6 +10,7 @@ const ExampleDataFormation = require("./mongodb/data/index.js");
 const RouterFns = require('./routes/index.js');
 const app = express();
 const router = express.Router();
+const client = require("./redis/index.js");
 
 RouterFns.forEach((routerFn, index) => {
     routerFn(router);
@@ -31,7 +32,21 @@ app.get('/test', async (req, res) => {
 
 app.use("/api", router);
 
-mongoose.connect("mongodb+srv://redis:Falcon21@redis.tofbtfn.mongodb.net/?retryWrites=true&w=majority").then(async () => {
+client.on('connect', () => {
+    console.log("Redis Client Connected");
+})
+
+client.on('error', (err) => {
+    console.log("Redis Client Error", err);
+})
+
+client.connect().then(() => {
+    console.log("Redis Client Connected");
+}).catch(err => {
+    console.log(err);
+})
+
+mongoose.connect("mongodb+srv://ms:FqzMjcCwllhgGG9h@redis.zfooibf.mongodb.net/production?retryWrites=true&w=majority").then(async () => {
     console.log("MongoDB Connected");
     console.log("ExampleDataFormation Started");
     await ExampleDataFormation();
