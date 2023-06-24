@@ -5,7 +5,6 @@ const UsersData = require("./user.js");
 const MessagesData = require("./message.js");
 
 const ExampleDataFormation = async () => {
-    //Users Count
     const usersCount = await Users.estimatedDocumentCount();
 
     if (Users.count <= 0) {
