@@ -14,6 +14,7 @@ const SubscribeAndUnsubscribe = async () => {
     let i = 0;
     const wait = 30;
     console.log("Subscribe Started, will be done 30 sec");
+
     const timer = setInterval(() => {
         i++;
         console.log(wait - i, 'second left');

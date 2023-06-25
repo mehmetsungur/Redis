@@ -21,6 +21,7 @@
     "node-cron": "^3.0.2",
     "node-fetch": "^2.6.11",
     "nodemon": "^2.0.22",
-    "redis": "^4.6.7"
+    "redis": "^4.6.7",
+    "terminal-kit": "^3.0.0"
   }
 }

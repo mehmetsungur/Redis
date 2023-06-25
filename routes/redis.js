@@ -1,5 +1,6 @@
 const { route } = require("express/lib/router");
 const client = require("../redis/index.js");
+
 module.exports = (router) => {
     /* TEST */
     router.get('/redis/test', async (req, res) => {
