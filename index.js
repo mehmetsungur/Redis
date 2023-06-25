@@ -11,6 +11,11 @@ const RouterFns = require('./routes/index.js');
 const app = express();
 const router = express.Router();
 const client = require("./redis/index.js");
+const cron = require("node-cron");
+
+let redisConnected = false, mongodbConnected = false;
+
+const RedisUsersCacheWorker = require("./workers/RedisUsersCacheWorker.js");
 
 RouterFns.forEach((routerFn, index) => {
     routerFn(router);
@@ -42,17 +47,44 @@ client.on('error', (err) => {
 
 client.connect().then(() => {
     console.log("Redis Client Connected");
+    redisConnected = true;
 }).catch(err => {
     console.log(err);
 })
 
 mongoose.connect("mongodb+srv://ms:FqzMjcCwllhgGG9h@redis.zfooibf.mongodb.net/production?retryWrites=true&w=majority").then(async () => {
     console.log("MongoDB Connected");
-    console.log("ExampleDataFormation Started");
-    await ExampleDataFormation();
+    //await client.connect();
+    mongodbConnected = true;
+    // RedisUsersCacheWorker().then((res) => {
+    //     if (res) {
+    //         console.log("Users are synchronize with Redis Cache System");
+    //     }
+    // }).catch((err) => {
+    //     console.log(err);
+    // })
+
+    // console.log("ExampleDataFormation Started");
+    // await ExampleDataFormation();
 }).catch(err => {
     console.log(err);
 })
+
+// cron.schedule('* * * * *', () => {
+//     console.log('Redis Connected: ', redisConnected);
+//     console.log('MongoDB Connected: ', mongodbConnected);
+//     if (redisConnected && mongodbConnected) {
+//         RedisUsersCacheWorker().then((res) => {
+//             if (res) {
+//                 console.log("Users are synchronize with Redis Cache System");
+//             }
+//         }).catch((err) => {
+//             console.log(err);
+//         })
+//     } else {
+//         console.log("You can not run the worker because of connection not established");
+//     }
+// })
 
 app.listen(80, () => {
     console.log('express server using 80 port');
